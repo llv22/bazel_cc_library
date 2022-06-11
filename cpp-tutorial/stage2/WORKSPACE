@@ -1,0 +1,25 @@
+workspace(name = "stage2")
+
+## Way 1: git_repository
+# load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+# git_repository(
+#     name = "rules_cc",
+#     remote = "https://github.com/llv22/rules_cc.git",
+#     tag = "0.0.2",
+# )
+
+
+## Way 2: http_archive
+# get via https://stackoverflow.com/questions/61332371/how-to-get-a-sha256-hash-code-for-a-github-repo by commnad line `shasum -a 256`
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# issue about "Every .bzl file must have a corresponding package, but X does not have one #12630", refer to https://github.com/bazelbuild/bazel/issues/12630
+# this is caused by the embedded folder name "rules_cc-0.0.2", just strip the embedded one and move content to the top level
+http_archive(
+    name = "rules_cc",
+    strip_prefix = "rules_cc-0.0.2",
+    urls = ["https://github.com/llv22/rules_cc/releases/download/0.0.2/rules_cc-0.0.2.tar.gz"],
+    sha256 = "937c374edc65b18f792cc016402721ff62cbfd0c6929da7fe7ed5c37adeb16e8",
+)
