@@ -23,3 +23,5 @@ http_archive(
     urls = ["https://github.com/llv22/rules_cc/releases/download/0.0.2/rules_cc-0.0.2.tar.gz"],
     sha256 = "937c374edc65b18f792cc016402721ff62cbfd0c6929da7fe7ed5c37adeb16e8",
 )
+
+## reason: The version question here is just what version of Xcode added support for params files to libtool. It looks like the answer to that is 11.0, refer to https://github.com/bazelbuild/bazel/issues/12894
