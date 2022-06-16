@@ -2,7 +2,7 @@ load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
 # load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "C_COMPILE_ACTION_NAME")
 
 def _combine_impl(ctx):
-    cc_toolchain = find_cpp_toolchain(ctx)    
+    cc_toolchain = find_cpp_toolchain(ctx)
 
     target_list = []
     for dep_target in ctx.attr.deps:        
@@ -55,41 +55,43 @@ def _combine_impl(ctx):
 
         paths = list(counter.keys())
         size = 200
-        max_argument_size = 262144
-        segment_len = len(paths)//size + (int)(len(paths)%size != 0)
-        print("segment_len = {}, total size = {}".format(segment_len, len(paths)))
-        inter_libraries = []
-        for x in range(segment_len):
-            if (x+1)*size > len(paths):
-                end = len(paths)
-            else:
-                end = (x+1)*size
-            command = "export PATH=$PATH:{} && {} -shared -fPIC {} -o {} -pthread -lm -ldl -lpthread -Wl,-framework -Wl,SystemConfiguration -Wl,-S -lc++ -no-canonical-prefixes -undefined dynamic_lookup".format (
-                cc_toolchain.ld_executable,
-                cc_toolchain.compiler_executable,
-                " -Wl,-force_load,".join(paths[x*size:end]),
-                "inter_{}_{}.so".format(output.basename, x)
-            )
-            inter_libraries.append("inter_{}_{}.so".format(output.basename, x))
-            if len(command) - max_argument_size > 0:
-                fail("dynamic command argument validation failed, as oversizing by {} with dependencies size = {}.".format(len(command) - max_argument_size, len(paths)))
-            print("dynamic command = {}, paths = {}, outputs = {},  inputs = {}".format(command, paths[x*size:end], [ctx.actions.declare_file("inter_{}_{}.so".format(output.basename, x))], [ctx.actions.declare_file(f) for f in paths[x*size:end]]))
-            ctx.actions.run_shell(
-                outputs = [ctx.actions.declare_file("inter_{}_{}.so".format(output.basename, x))],
-                inputs = [ctx.actions.declare_file(f) for f in paths[x*size:end]],
-                command = command,
-            )
+        # max_argument_size = 262144
+        # segment_len = len(paths)//size + (int)(len(paths)%size != 0)
+        print("paths = {}".format(paths))
+        # inter_libraries = []
+        # for x in range(segment_len):
+        #     if (x+1)*size > len(paths):
+        #         end = len(paths)
+        #     else:
+        #         end = (x+1)*size
+        #     command = "export PATH=$PATH:{} && {} -shared -fPIC {} -o {} -pthread -lm -ldl -lpthread -Wl,-framework -Wl,SystemConfiguration -Wl,-S -lc++ -no-canonical-prefixes -undefined dynamic_lookup".format (
+        #         cc_toolchain.ld_executable,
+        #         "gcc",
+        #         " -Wl,-force_load,".join(paths[x*size:end]),
+        #         "inter_{}_{}.so".format(output.basename, x)
+        #     )
+        #     inter_libraries.append("inter_{}_{}.so".format(output.basename, x))
+        #     if len(command) - max_argument_size > 0:
+        #         fail("dynamic command argument validation failed, as oversizing by {} with dependencies size = {}.".format(len(command) - max_argument_size, len(paths)))
+        #     print("dynamic command = {}, paths = {}, outputs = {},  inputs = {}".format(command, paths[x*size:end], [ctx.actions.declare_file("inter_{}_{}.so".format(output.basename, x))], [ctx.actions.declare_file(f) for f in paths[x*size:end]]))
+        #     ctx.actions.run_shell(
+        #         outputs = [ctx.actions.declare_file("inter_{}_{}.so".format(output.basename, x))],
+        #         inputs = [ctx.actions.declare_file(f) for f in paths[x*size:end]],
+        #         command = command,
+        #     )
         
         command = "export PATH=$PATH:{} && {} -shared -fPIC {} -o {} -pthread -lm -ldl -lpthread -Wl,-framework -Wl,SystemConfiguration -Wl,-S -lc++ -no-canonical-prefixes -undefined dynamic_lookup".format (
             cc_toolchain.ld_executable,
-            cc_toolchain.compiler_executable,
-            " -Wl,-force_load,".join(inter_libraries),
+            "gcc",
+            " -Wl,-force_load,".join(paths),
             output.basename
         )
-        print("merging command = {}, outputs = {}, inputs = {}".format(command, [output], [ctx.actions.declare_file(f) for f in inter_libraries]))
+        # print("merging command = {}, outputs = {}, inputs = {}".format(command, [output], [ctx.actions.declare_file(f) for f in inter_libraries]))
+        print("merging command = {}, outputs = {}, inputs = {}".format(command, [output], [ctx.actions.declare_file(f) for f in paths]))
         ctx.actions.run_shell(
             outputs = [output],
-            inputs = [ctx.actions.declare_file(f) for f in inter_libraries],
+            inputs = [ctx.actions.declare_file(f) for f in paths],
+            # inputs = [ctx.actions.declare_file(f) for f in inter_libraries],
             command = command,
         )
 

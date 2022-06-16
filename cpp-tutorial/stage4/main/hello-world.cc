@@ -1,3 +1,4 @@
+#include "hello-tick.h"
 #include "hello-greet.h"
 #include <ctime>
 #include <iostream>
@@ -14,6 +15,8 @@ int main(int argc, char** argv) {
     who = argv[1];
   }
   std::cout << get_greet(who) << std::endl;
+  print_localtime();
+  std::cout << get_tick(who) << std::endl;
   print_localtime();
   return 0;
 }
