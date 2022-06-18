@@ -1,6 +1,6 @@
-#include "hello-tick.h"
 #include "hello-greet.h"
-#include <ctime>
+#include "hello-tick1.h"
+#include "hello-tick5000.h"
 #include <iostream>
 #include <string>
 
@@ -16,7 +16,9 @@ int main(int argc, char** argv) {
   }
   std::cout << get_greet(who) << std::endl;
   print_localtime();
-  std::cout << get_tick(who) << std::endl;
+  std::cout << get_tick1(who) << std::endl;
+  print_localtime();
+  std::cout << get_tick5000(who) << std::endl;
   print_localtime();
   return 0;
 }

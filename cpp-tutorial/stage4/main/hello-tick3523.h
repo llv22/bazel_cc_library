@@ -1,0 +1,8 @@
+#ifndef MAIN_HELLO_TICK3523_H_
+#define MAIN_HELLO_TICK3523_H_
+
+#include <string>
+
+std::string get_tick3523(const std::string &thing);
+
+#endif

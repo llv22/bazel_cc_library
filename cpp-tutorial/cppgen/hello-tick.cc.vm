@@ -1,0 +1,7 @@
+#set( $H = '#' )
+${H}include "hello-tick${number}.h"
+${H}include <string>
+
+std::string get_tick$number(const std::string& who) {
+  return "Hello for tick${number} " + who;
+}

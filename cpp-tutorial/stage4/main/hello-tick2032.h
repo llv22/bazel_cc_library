@@ -1,0 +1,8 @@
+#ifndef MAIN_HELLO_TICK2032_H_
+#define MAIN_HELLO_TICK2032_H_
+
+#include <string>
+
+std::string get_tick2032(const std::string &thing);
+
+#endif
