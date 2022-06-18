@@ -1,0 +1,9 @@
+#set( $H = '#' )
+${H}ifndef MAIN_HELLO_TICK${number}_H_
+${H}define MAIN_HELLO_TICK${number}_H_
+
+${H}include <string>
+
+std::string get_tick${number}(const std::string &thing);
+
+#endif
