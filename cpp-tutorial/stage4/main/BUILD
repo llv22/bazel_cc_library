@@ -37,6 +37,14 @@ cc_library(
 #   linkopts = ["-shared"],
 )
 
+# cc_library(
+#   name="hello-tick.so",
+#   srcs = ["hello-tick.cc","hello-tick1.cc","hello-tick2.cc","hello-tick3.cc","hello-tick4.cc","hello-tick5000.cc"],
+#   hdrs = ["hello-tick.h","hello-tick1.h","hello-tick2.h","hello-tick3.h","hello-tick4.h","hello-tick5000.h"],
+#   visibility=["//visibility:public"],
+# #   linkopts = ["-shared"],
+# )
+
 cc_binary(
     name = "hello-world",
     srcs = ["hello-world.cc"],
