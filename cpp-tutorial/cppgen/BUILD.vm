@@ -1,0 +1,48 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+cc_library(
+    name = "hello-tick",
+    srcs = ["hello-tick.cc"],
+    hdrs = ["hello-tick.h"],
+)
+
+#foreach( $n1 in $ns1 )
+cc_library(
+    name = "hello-tick${n1}",
+    srcs = ["hello-tick${n1}.cc"],
+    hdrs = ["hello-tick${n1}.h"],
+)
+#end
+
+#foreach( $n2 in $ns2 )
+cc_library(
+    name = "hello-tick${n2}",
+    srcs = ["hello-tick${n2}.cc"],
+    hdrs = ["hello-tick${n2}.h"],
+    alwayslink = 1,
+)
+#end
+
+cc_library(
+    name = "hello-greet",
+    srcs = ["hello-greet.cc"],
+    hdrs = ["hello-greet.h"],
+    alwayslink = 1,
+    deps = [
+        ":hello-tick",
+#foreach( $n1 in $ns1 )
+        ":hello-tick${n1}",
+#end
+#foreach( $n2 in $ns2 )
+        ":hello-tick${n2}",
+#end
+    ],
+)
+
+cc_binary(
+    name = "hello-world",
+    srcs = ["hello-world.cc"],
+    deps = [
+        ":hello-greet",
+    ],
+)
