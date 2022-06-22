@@ -14,7 +14,7 @@ public class TickGenerator {
 
         String src = "srcs = [\"hello-tick.cc\"";
         String header = "hdrs = [\"hello-tick.h\"";
-        for (int i= 1; i <= 5000; i++) {
+        for (int i= 1; i <= 6000; i++) {
             generate(velocityEngine, "hello-tick.cc.vm", "hello-tick%s.cc", Integer.toString(i));
             src += String.format(",%s", String.format("\"hello-tick%s.cc\"", Integer.toString(i)));
             generate(velocityEngine, "hello-tick.h.vm", "hello-tick%s.h", Integer.toString(i));
