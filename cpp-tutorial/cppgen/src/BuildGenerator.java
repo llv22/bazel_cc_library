@@ -14,9 +14,9 @@ public class BuildGenerator {
         velocityEngine.init();
         Template cc = velocityEngine.getTemplate("BUILD.vm");
         VelocityContext context = new VelocityContext();
-        context.put("ns1", IntStream.range(1, 1501).boxed().collect(Collectors.toList()));
-        context.put("ns2", IntStream.range(1501, 3001).boxed().collect(Collectors.toList()));
-        context.put("ns3", IntStream.range(3001, 4501).boxed().collect(Collectors.toList()));
+        context.put("ns1", IntStream.range(1, 2001).boxed().collect(Collectors.toList()));
+        context.put("ns2", IntStream.range(2001, 4001).boxed().collect(Collectors.toList()));
+        context.put("ns3", IntStream.range(4001, 6001).boxed().collect(Collectors.toList()));
         try(Writer writer = new FileWriter("BUILD")) {
             cc.merge(context, writer);
         }
